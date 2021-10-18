@@ -2,7 +2,6 @@ function TestFuc() {
 	var frm = document.signfrm;
 	const check = 0; 
 	check = checkId();
-	check = 
 
 }
 // 변수 설정
