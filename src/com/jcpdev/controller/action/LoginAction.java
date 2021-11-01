@@ -17,39 +17,39 @@ public class LoginAction implements Action {
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html");
-		
+
 		HttpSession session = request.getSession();
-		String id=request.getParameter("id");
-		String password=request.getParameter("password");
-		
-		if(session.getAttribute("readIdx") ==null){
-			StringBuilder readIdx=new StringBuilder("/");
+		String member_id = request.getParameter("member_id");
+		String member_password = request.getParameter("member_password");
+
+		if (session.getAttribute("readIdx") == null) {
+			StringBuilder readIdx = new StringBuilder("/");
 			session.setAttribute("readIdx", readIdx);
 		}
-		
-		Map<String,String> map = new HashMap<>();
-		map.put("id",id);
-		map.put("password",password);
-		System.out.println(map);
+
+		Map<String, String> map = new HashMap<>();
+		map.put("member_id", member_id);
+		map.put("member_password", member_password);
 		MemberDao dao = MemberDao.getInstance();
 		Member user_check = dao.login(map);
-		if(user_check != null){
-			//∑Œ±◊¿Œ ¡§∫∏ ¿œƒ°
-				session.setAttribute("user_name",user_check.getMember_name());
-				session.setAttribute("user_id",user_check.getMember_id());
-				request.setAttribute("message", "∑Œ±◊¿Œ µ«æ˙Ω¿¥œ¥Ÿ.");
-				request.setAttribute("url", "index.do");
-			}else {
-				request.setAttribute("message", "∑Œ±◊¿Œ ¡§∫∏∞° ø√πŸ∏£¡ˆ æ Ω¿¥œ¥Ÿ.");
-				request.setAttribute("url", "login.do");   //∫Ø∞Ê
-			}
-		
+
+		if (user_check != null) {
+			session.setAttribute("user_name", user_check.getMember_name());
+			session.setAttribute("user_id", user_check.getMember_id());
+			session.setAttribute("user_img", user_check.getMember_img1());
+			request.setAttribute("message", "Î°úÍ∑∏Ïù∏ ÏÑ±Í≥µ");
+			request.setAttribute("url", "index.do");
+		} else {
+			request.setAttribute("message", "Î°úÍ∑∏Ïù∏ Ïã§Ìå®");
+			request.setAttribute("url", "login.do");
+		}
+
 		ActionForward foward = new ActionForward();
 		foward.isRedirect = false;
-		foward.url="error/alert.jsp";
+		foward.url = "error/alert.jsp";
 		return foward;
 	}
 

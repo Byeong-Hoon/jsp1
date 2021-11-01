@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.jcpdev.dao.ProductDao;
-import com.jcpdev.dto.PageDto;
 import com.jcpdev.dto.Product;
 
 public class MainAction implements Action {
@@ -23,22 +22,16 @@ public class MainAction implements Action {
 		response.setContentType("text/html");
 
 		ProductDao dao = ProductDao.getInstance();
-		int pageNo;
-		if (request.getParameter("page") == null)
-			pageNo = 1;
-		else
-			pageNo = Integer.parseInt(request.getParameter("page"));
-
-		int pageSize = 15;
-
-		PageDto pageDto = new PageDto(pageNo, dao.getCount(), pageSize);
-
+		int StartNo = 0;
+		int EndNo = 8;
 		Map<String, Integer> map = new HashMap<>();
-		map.put("pageSize", pageSize);
-		map.put("startNo", pageDto.getStartNo());
-		List<Product> list = dao.getList(map);
+		map.put("StartNo", StartNo);
+		map.put("EndNo", EndNo);
+		List<Product> list = dao.getAddList(map);
 
 		request.setAttribute("list", list);
+		request.setAttribute("EndNo", EndNo);
+		request.setAttribute("StartNo", StartNo);
 
 		ActionForward foward = new ActionForward();
 		foward.isRedirect = false;
